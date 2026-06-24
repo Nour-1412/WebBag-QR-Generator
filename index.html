@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 
@@ -7,7 +8,7 @@
 
 <title>مولد QR Code مجاني | WebBag</title>
 
-<meta name="description" content="أنشئ رمز QR احترافي للروابط والنصوص وأرقام الهواتف مجانًا أونلاين.">
+<meta name="description" content="أنشئ QR Code احترافي للروابط والنصوص والبريد الإلكتروني وأرقام الهاتف مجانًا.">
 
 <link rel="stylesheet" href="style.css">
 
@@ -23,27 +24,62 @@
 <h1>مولد QR Code</h1>
 
 <p class="subtitle">
-أنشئ رمز QR احترافي للروابط والنصوص وأرقام الهواتف خلال ثوانٍ.
+أنشئ رمز QR احترافي خلال ثوانٍ وقم بتنزيله مباشرة.
 </p>
+
+<label>نوع المحتوى</label>
+
+<select id="type">
+<option value="url">رابط</option>
+<option value="text">نص</option>
+<option value="email">بريد إلكتروني</option>
+<option value="phone">رقم هاتف</option>
+</select>
+
+<label>المحتوى</label>
 
 <input
 type="text"
 id="qrInput"
 placeholder="أدخل الرابط أو النص هنا"
+
 >
 
-<button id="generateBtn">
-إنشاء QR Code
-</button>
+<div class="options">
+
+<div>
+<label>لون الرمز</label>
+<input type="color" id="qrColor" value="#000000">
+</div>
+
+<div>
+<label>لون الخلفية</label>
+<input type="color" id="bgColor" value="#ffffff">
+</div>
+
+</div>
+
+<label>الحجم</label>
+
+<select id="qrSize">
+<option value="200">صغير</option>
+<option value="300" selected>متوسط</option>
+<option value="400">كبير</option>
+</select>
 
 <div id="qrContainer"></div>
 
-<button
-id="downloadBtn"
-style="display:none;"
->
-تنزيل QR Code
+<div class="buttons">
+
+<button id="downloadBtn">
+تنزيل PNG
 </button>
+
+<button id="copyBtn">
+نسخ المحتوى
+</button>
+
+</div>
 
 </div>
 
@@ -53,3 +89,4 @@ style="display:none;"
 
 </body>
 </html>
+
