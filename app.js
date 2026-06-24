@@ -1,81 +1,110 @@
 const qrInput = document.getElementById("qrInput");
-const generateBtn = document.getElementById("generateBtn");
 const qrContainer = document.getElementById("qrContainer");
-const downloadBtn = document.getElementById("downloadBtn");
 
-let qrCreated = false;
+const qrColor = document.getElementById("qrColor");
+const bgColor = document.getElementById("bgColor");
 
-generateBtn.addEventListener("click", generateQR);
+const qrSize = document.getElementById("qrSize");
+const type = document.getElementById("type");
 
-function generateQR() {
+const downloadBtn =
+document.getElementById("downloadBtn");
 
-    const text = qrInput.value.trim();
+const copyBtn =
+document.getElementById("copyBtn");
 
-    if (!text) {
-        alert("يرجى إدخال رابط أو نص");
-        return;
-    }
+function generateQR(){
 
-    qrContainer.innerHTML = "";
+const value =
+qrInput.value.trim();
 
-    new QRCode(qrContainer, {
-        text: text,
-        width: 280,
-        height: 280,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-    });
+if(!value){
 
-    qrCreated = true;
+qrContainer.innerHTML = "";
 
-    downloadBtn.style.display = "block";
+return;
+
 }
 
-downloadBtn.addEventListener("click", () => {
+let finalText = value;
 
-    if (!qrCreated) {
-        alert("قم بإنشاء QR أولاً");
-        return;
-    }
+if(type.value === "email"){
+finalText = "mailto:" + value;
+}
 
-    const canvas = qrContainer.querySelector("canvas");
+if(type.value === "phone"){
+finalText = "tel:" + value;
+}
 
-    if (canvas) {
+qrContainer.innerHTML = "";
 
-        const link = document.createElement("a");
-
-        link.href = canvas.toDataURL("image/png");
-
-        link.download = "webbag-qr-code.png";
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-
-        return;
-    }
-
-    const img = qrContainer.querySelector("img");
-
-    if (img) {
-
-        const link = document.createElement("a");
-
-        link.href = img.src;
-
-        link.download = "webbag-qr-code.png";
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-
-        return;
-    }
-
-    alert("حدث خطأ أثناء التنزيل");
+new QRCode(qrContainer,{
+text:finalText,
+width:Number(qrSize.value),
+height:Number(qrSize.value),
+colorDark:qrColor.value,
+colorLight:bgColor.value,
+correctLevel:QRCode.CorrectLevel.H
 });
+
+}
+
+qrInput.addEventListener("input",generateQR);
+
+qrColor.addEventListener("input",generateQR);
+
+bgColor.addEventListener("input",generateQR);
+
+qrSize.addEventListener("change",generateQR);
+
+type.addEventListener("change",generateQR);
+
+downloadBtn.addEventListener(
+"click",
+()=>{
+
+const canvas =
+qrContainer.querySelector("canvas");
+
+if(!canvas){
+
+alert("قم بإنشاء QR أولاً");
+
+return;
+
+}
+
+const link =
+document.createElement("a");
+
+link.href =
+canvas.toDataURL("image/png");
+
+link.download =
+"webbag-qr-code.png";
+
+link.click();
+
+}
+);
+
+copyBtn.addEventListener(
+"click",
+()=>{
+
+if(!qrInput.value.trim()){
+
+alert("لا يوجد محتوى للنسخ");
+
+return;
+
+}
+
+navigator.clipboard.writeText(
+qrInput.value
+);
+
+alert("تم النسخ بنجاح");
+
+}
+);
